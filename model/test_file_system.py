@@ -87,3 +87,38 @@ def test_write_desktop_file():
     
     # Cleanup
     os.remove(test_file)
+
+
+def test_check_path():
+    """Test the check_path method with different combinations of allow_folders and allow_files"""
+    # Create test folder and file
+    test_folder = "test_folder"
+    test_file = "test_file.txt"
+    os.makedirs(test_folder, exist_ok=True)
+    with open(test_file, 'w') as f:
+        f.write("test")
+
+    try:
+        # Test with both folders and files allowed (default)
+        assert FileSystem.check_path(test_folder) == True
+        assert FileSystem.check_path(test_file) == True  # Default prioritizes folders
+
+        # Test with only folders allowed
+        assert FileSystem.check_path(test_folder, allow_folders=True, allow_files=False) == True
+        assert FileSystem.check_path(test_file, allow_folders=True, allow_files=False) == False
+
+        # Test with only files allowed
+        assert FileSystem.check_path(test_folder, allow_folders=False, allow_files=True) == False
+        assert FileSystem.check_path(test_file, allow_folders=False, allow_files=True) == True
+
+        # Test with neither allowed
+        assert FileSystem.check_path(test_folder, allow_folders=False, allow_files=False) == False
+        assert FileSystem.check_path(test_file, allow_folders=False, allow_files=False) == False
+
+        # Test with nonexistent path
+        assert FileSystem.check_path("nonexistent", allow_folders=True, allow_files=True) == False
+
+    finally:
+        # Clean up test files
+        os.remove(test_file)
+        os.rmdir(test_folder)

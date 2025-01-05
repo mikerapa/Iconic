@@ -8,6 +8,13 @@ class FileSystem:
     logger = get_logger(__name__)
 
     @staticmethod
+    def check_path(path: str, allow_folders: bool = True, allow_files: bool = True) -> bool:
+        return (allow_folders and os.path.isdir(path)) or (allow_files and os.path.isfile(path))
+        
+
+
+
+    @staticmethod
     def read_desktop_file(file_path: str) -> DesktopEntry:
         """Reads a .desktop file and returns a DesktopEntry object
         
