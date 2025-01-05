@@ -2,7 +2,7 @@
 import os
 import pytest
 from model.desktop_entry import DesktopEntry
-from model.file_system import read_desktop_file, write_desktop_file
+from model.file_system import FileSystem
 
 
 def test_read_desktop_file():
@@ -27,8 +27,8 @@ def test_read_desktop_file():
     )
     
     # Act
-    result = read_desktop_file(test_file)
-    
+    result = FileSystem.read_desktop_file(test_file)
+
     # Assert
     assert result == expected
     
@@ -42,7 +42,7 @@ def test_read_desktop_file_not_found():
     
     # Act & Assert
     with pytest.raises(FileNotFoundError):
-        read_desktop_file(non_existent_file)
+        FileSystem.read_desktop_file(non_existent_file)
 
 
 def test_read_desktop_file_invalid_format():
@@ -53,7 +53,7 @@ def test_read_desktop_file_invalid_format():
     
     # Act & Assert
     with pytest.raises(ValueError):
-        read_desktop_file(test_file)
+        FileSystem.read_desktop_file(test_file)
     
     # Cleanup
     os.remove(test_file)
@@ -78,7 +78,7 @@ def test_write_desktop_file():
                "Categories=Development;Testing;\n"
     
     # Act
-    write_desktop_file(test_file, entry)
+    FileSystem.write_desktop_file(test_file, entry)
     
     # Assert
     with open(test_file, 'r') as f:
