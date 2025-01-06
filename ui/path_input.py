@@ -2,6 +2,7 @@ from textual.containers import Vertical
 from textual.widgets import Input, Label, Static
 from textual.reactive import reactive
 from textual.app import ComposeResult
+from textual import events
 import os
 from model.file_system import FileSystem
 import model.log_handler as log_handler
@@ -42,7 +43,47 @@ class PathInput(Static):
         self.folder_path = event.value  
         self.logger.info(f"Path: {self.folder_path}")
         self.validate_path()
+
         
+    def on_key(self, event: events.Key) -> None:
+        self.logger.info(f"Key pressed: {event.key}")   
+        """Handle key events in the input field"""
+        if event.key == "tab":
+            self.logger.info(f"Tab key pressed")
+            current_path = self.input.value
+            # Get the directory and partial name
+            directory = os.path.dirname(current_path) if current_path else "."
+            partial_name = os.path.basename(current_path)
+            
+            try:
+                # List all matching items in the directory
+                matches = [f for f in os.listdir(directory) 
+                          if f.startswith(partial_name) and
+                          (os.path.isfile(os.path.join(directory, f)) and self.allow_files or
+                           os.path.isdir(os.path.join(directory, f)) and self.allow_folders)]
+                
+                if matches:
+                    # Complete with the first match
+                    completion = matches[0]
+                    if directory == ".":
+                        new_path = completion
+                    else:
+                        new_path = os.path.join(directory, completion)
+                    
+                    # Add trailing slash for directories
+                    if os.path.isdir(new_path):
+                        new_path = os.path.join(new_path, "")
+                    
+                    self.input.value = new_path
+                    # Move cursor to end
+                    self.input.cursor_position = len(new_path)
+            except (OSError, PermissionError) as e:
+                self.logger.error(f"Error during path completion: {e}")
+            
+            # Prevent default tab behavior
+            event.prevent_default()
+
+
     def validate_path(self, _: str | None = None) -> None:
         """Validate the current path and update styling"""
         self.is_valid = FileSystem.check_path(self.folder_path, allow_folders=self.allow_folders, allow_files=self.allow_files)
