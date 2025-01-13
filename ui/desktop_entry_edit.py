@@ -7,20 +7,30 @@ from ui.path_input import PathInput
 
 class DesktopEntryEdit(Widget):
 
+    DEFAULT_CSS = """
+    DesktopEntryEdit {
+        border: solid red;
+        layout: grid;
+        grid-size: 2 5;
+        grid-columns: 1fr 8fr;
+    }
+
+
+    """
 
     def __init__(self, desktop_entry: DesktopEntry):
         super().__init__()
         self.desktop_entry = desktop_entry
 
     def compose(self) -> ComposeResult:
-        yield Label("Desktop Entry Editor")
-        yield Label("Name:")
+        print("Inside DesktopEntryEdit.compose")
+        yield Label("Name:", classes="grid-label")
         yield Input(value=self.desktop_entry.name)
         yield Label("Exec:")
         yield PathInput(allow_files=True, allow_folders=False)
         yield Label("Icon:")
         yield PathInput(allow_files=True, allow_folders=False)
         yield Label("Type:")
-        # # yield Input(value=self.desktop_entry.type)
-        # yield Label("Categories:")
-        # # yield Input(value=self.desktop_entry.categories)
+        yield Input(value=self.desktop_entry.type)
+        yield Label("Categories:")
+        yield Input(value=self.desktop_entry.categories)
