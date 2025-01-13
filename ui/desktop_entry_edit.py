@@ -9,17 +9,18 @@ class DesktopEntryEdit(Widget):
 
     DEFAULT_CSS = """
     DesktopEntryEdit {
-        border: solid red;
+        border: solid $secondary;
         layout: grid;
         grid-size: 2 5;
         grid-columns: 1fr 8fr;
+        grid-rows: 4;
     }
 
 
     """
 
-    def __init__(self, desktop_entry: DesktopEntry):
-        super().__init__()
+    def __init__(self, desktop_entry: DesktopEntry, classes: str = ""):
+        super().__init__(classes=classes)
         self.desktop_entry = desktop_entry
 
     def compose(self) -> ComposeResult:

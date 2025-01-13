@@ -119,8 +119,9 @@ class MainView(Widget):
         yield FileSelectBar(self.selection_message)
         # yield Horizontal(Label(self.selection_message, id="selection-message", classes="attention_label inline"), Button("Browse", id="browse"))
         # yield DesktopEntryEdit(self.desktop_file )
-        with VerticalScroll():
-            yield DesktopEntryEdit(self.desktop_file )
+        yield VerticalScroll( DesktopEntryEdit(self.desktop_file, classes="grid-scroll" ))
+        yield Horizontal(Button("Save", id="save"), Button("Save As", id="save_as"), Button("Clear", id="clear"), classes="bottom-button-bar")
+            
         
         # yield DesktopEntryEdit(self.desktop_file)
 
