@@ -9,7 +9,9 @@ class FileSystem:
 
     @staticmethod
     def check_path(path: str, allow_folders: bool = True, allow_files: bool = True) -> bool:
-        return (allow_folders and os.path.isdir(path)) or (allow_files and os.path.isfile(path))
+        # The path is expanded to the user's home directory, for paths which contain ~.
+        expanded_path = os.path.expanduser(path)
+        return (allow_folders and os.path.isdir(expanded_path)) or (allow_files and os.path.isfile(expanded_path))
         
 
 
