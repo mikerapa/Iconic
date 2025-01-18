@@ -1,4 +1,5 @@
-from textual.app import ComposeResult, on
+from textual.app import ComposeResult, on 
+from textual import work 
 from textual.containers import Vertical, Horizontal, HorizontalScroll, VerticalScroll
 from textual.widget import Widget
 from textual.widgets import Label, Static, Input, Button
@@ -8,6 +9,7 @@ from model.desktop_entry import DesktopEntry
 from model.file_system import FileSystem
 from ui.open_file import OpenFileModal
 from textual.reactive import reactive
+from ui.save_dialogs import SaveConfirmModal, SaveAsModal
 
 
 class InputWithLabel(Widget):
@@ -131,6 +133,9 @@ class MainView(Widget):
     def open_desktop_file(self, path: str):
         self.desktop_file = FileSystem.get_desktop_entry(path)
 
+    
+
+
 
     @on(Button.Pressed, "#browse")
     def on_browse_button_pressed(self, event: Button.Pressed) -> None:
@@ -165,4 +170,42 @@ class MainView(Widget):
 
             # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
             # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
+
+    @on(Button.Pressed, "#save")
+    def on_save_button_pressed(self, event: Button.Pressed) -> None:
+        print("on_save_button_pressed: ", self.desktop_file_path)
+        if self.desktop_file_path:
+            # Show confirmation dialog
+            self.confirm_save()
+        else:
+            # Show save as dialog
+            self.handle_save_as()
+
+    @on(Button.Pressed, "#save_as")
+    def on_save_as_button_pressed(self, event: Button.Pressed) -> None:
+        self.handle_save_as()
+
+    @work
+    async def confirm_save(self) -> None:
+        print("confirm_save: ", self.desktop_file_path)
+        confirm_modal = SaveConfirmModal(self.desktop_file_path)
+        if await self.app.push_screen_wait(confirm_modal):
+            print("confirm_save: ", self.desktop_file_path, "desktop_file: ", self.desktop_file)
+            FileSystem.write_desktop_file(self.desktop_file_path, self.desktop_file)
+
+
+    @work
+    async def handle_save_as(self) -> None:
+        print("Saving as...")
+        save_as_modal = SaveAsModal()
+        # Wait for the modal to complete and get the result
+        result = await self.app.push_screen_wait(save_as_modal)
+        print("handle_save_as result: ", result)
+        if result:
+            FileSystem.write_desktop_file(result, self.desktop_file)
+            self.desktop_file_path = result
+            self.selection_message = f"Editing {result}"
+            self.query_one("#selection-message").update(self.selection_message)
+        else:
+            print("No save path selected")
 
