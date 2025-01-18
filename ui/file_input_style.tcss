@@ -13,9 +13,6 @@ Input {
     color: $foreground;
 }
 
-Button {
-    background: $secondary;
-}
 
 .static-text {
     color: #FFFFFF;
@@ -53,8 +50,8 @@ Label {
 Button{
     background: $secondary;
     color: $foreground;
-    padding: 0;
-    margin: 1;
+    padding: 0 1 0 1;
+    margin: 0 1 0 1;
 }
 
 
