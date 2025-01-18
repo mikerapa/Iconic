@@ -46,19 +46,14 @@ class FileSystem:
             line = line.strip()
             if line and not line.startswith('#'):
                 key, value = line.split('=', 1)
-                if key == "Categories":
-                    # Remove trailing semicolon and split into list
-                    categories = value.rstrip(';').split(';')
-                    desktop_data[key.lower()] = categories
-                else:
-                    desktop_data[key.lower()] = value
+                desktop_data[key.lower()] = value
                     
         entry = DesktopEntry(
             name=desktop_data.get('name', ''),
             exec=desktop_data.get('exec', ''),
             icon=desktop_data.get('icon', ''),
             type=desktop_data.get('type', ''),
-            categories=desktop_data.get('categories', [])
+            categories=desktop_data.get('categories', '')
         )
         
         FileSystem.logger.debug(f"Successfully read desktop file: {file_path}")

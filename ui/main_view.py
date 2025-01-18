@@ -73,6 +73,8 @@ class FileSelectBar(Widget):
         yield Button("Browse", id="browse")
 
 
+# TODO: This file has some unused sytles
+
 
 
 class MainView(Widget):

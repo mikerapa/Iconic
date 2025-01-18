@@ -23,7 +23,7 @@ def test_read_desktop_file():
         exec="/usr/bin/test",
         icon="/usr/share/icons/test.png",
         type="Application",
-        categories=["Development", "Testing"]
+        categories="Development;Testing;"
     )
     
     # Act
@@ -67,7 +67,7 @@ def test_write_desktop_file():
         exec="/usr/bin/test",
         icon="/usr/share/icons/test.png",
         type="Application",
-        categories=["Development", "Testing"]
+        categories="Development;Testing;"
     )
     
     expected = "[Desktop Entry]\n" + \

@@ -9,7 +9,7 @@ def test_create_desktop_entry():
         exec="/usr/bin/test",
         icon="/usr/share/icons/test.png",
         type="Application",
-        categories=["Development", "Testing"]
+        categories="Development;Testing;"
     )
 
     expected = "[Desktop Entry]\n" + \

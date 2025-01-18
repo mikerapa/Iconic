@@ -21,7 +21,7 @@ class DesktopEntryBuilder:
         content += f"Exec={desktop_entry.exec}\n"
         content += f"Icon={desktop_entry.icon}\n"
         content += f"Type={desktop_entry.type}\n"
-        content += f"Categories={';'.join(desktop_entry.categories)};\n"
+        content += f"Categories={desktop_entry.categories}\n"
         
         DesktopEntryBuilder.logger.debug("Desktop entry created successfully")
         return content
