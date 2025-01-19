@@ -12,47 +12,6 @@ from textual.reactive import reactive
 from ui.save_dialogs import SaveConfirmModal, SaveAsModal
 
 
-class InputWithLabel(Widget):
-    """An input with a label."""
-
-    DEFAULT_CSS = """
-    InputWithLabel {
-        layout: horizontal;
-        height: auto;
-    }
-    InputWithLabel Label {
-        padding: 1;
-        width: 12;
-        text-align: right;
-    }
-    InputWithLabel Input {
-        width: 1fr;
-    }
-    """
-
-    def __init__(self, input_label: str) -> None:
-        self.input_label = input_label
-        super().__init__()
-
-    def compose(self) -> ComposeResult:  
-        yield Label(self.input_label)
-        yield Input()
-
-class FilePathInput2(Widget):
-    """Widget for selecting file or directory paths."""
-
-    # def __init__(self, pattern: str = "*", select_directory: bool = False):
-    #     super().__init__()
-    #     self.pattern = pattern
-    #     self.select_directory = select_directory
-    #     self.path = ""
-
-    def __init__(self):
-        super().__init__()
-
-    def compose(self) -> ComposeResult:
-        yield Static("File Path Input", id="file-path-input-title")
-
 
 class FileSelectBar(Widget):
     """Widget for selecting a file or directory path."""
@@ -118,11 +77,7 @@ class MainView(Widget):
 
     def compose(self) -> ComposeResult:
         """Compose the main view layout"""
-        # selection_label = Label(self.selection_message, id="selection-message")
-        # selection_label.styles.border = "solid green"
         yield FileSelectBar(self.selection_message)
-        # yield Horizontal(Label(self.selection_message, id="selection-message", classes="attention_label inline"), Button("Browse", id="browse"))
-        # yield DesktopEntryEdit(self.desktop_file )
         yield VerticalScroll( DesktopEntryEdit(self.desktop_file, classes="grid-scroll" ))
         yield Horizontal(Button("Save", id="save"), Button("Save As", id="save_as"), Button("Clear", id="clear"), classes="bottom-button-bar")
             
@@ -156,20 +111,7 @@ class MainView(Widget):
         event.button.styles.animate("opacity", 1, duration=2.0)
         modal = OpenFileModal()
         returned_path = self.app.push_screen(modal, desktop_file_selected)
-        # event.button.styles.animate("opacity", 1, duration=0.1)
 
-            # yield FilePathInput(pattern="*.txt")
-            # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
-            # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
-
-    
-        # yield FilePathInput(pattern="*.desktop")
-        # yield FilePathInput2()
-        # yield Label("Desktop Entry Editor") 
-            # yield FilePathInput(pattern="*.txt")
-
-            # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
-            # yield DesktopEntryEdit(DesktopEntry(name="Test", exec="test", icon="test", type="Application", categories=["Utility"]))
 
     @on(Button.Pressed, "#save")
     def on_save_button_pressed(self, event: Button.Pressed) -> None:
