@@ -8,7 +8,8 @@ from textual import on
 
 class OpenFileModal(ModalScreen[str | None]):
     """Modal screen for file/directory selection."""
-
+    #TODO: This class may be redundant, as the FilePathInput widget can be used to select a file or directory
+    #TODO: This file may be too specific to .desktop files
 
     
     def __init__(self, path: str = ".", pattern: str = "**.desktop", select_directory: bool = False):

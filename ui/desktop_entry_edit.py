@@ -40,7 +40,7 @@ class DesktopEntryEdit(Widget):
         return True
 
 
-
+    # TODO: all of the inputs should have validation
     def compose(self) -> ComposeResult:
         print("Inside DesktopEntryEdit.compose")
         yield Label("Name:", classes="grid-label")
@@ -57,9 +57,12 @@ class DesktopEntryEdit(Widget):
     @on(FilePathInput.PathSelected)
     def on_path_selected(self, event: FilePathInput.PathSelected):
         print(f"Path selected: {event.path}, id: {event.id}")
+        # TODO: This isn't handling the actual changed value
+
 
     @on(Input.Changed)
     def on_input_changed(self, event: Input.Changed):
+        # TODO: Some of the ids in the if below aren't valid because they are FilePathInput ids
         print(f"Input changed {event.input.id}: {event.value}, valid: {event.validation_result}")
         if event.input.id == "name":
             self.desktop_entry.name = event.value
