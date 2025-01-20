@@ -23,7 +23,7 @@ class OpenFileModal(ModalScreen[str | None]):
         yield FilteredDirectoryTree(
             path=self.path, 
             pattern=self.pattern,
-            select_directory=self.select_directory
+            allow_folder=self.select_directory
         )
         yield Horizontal(Button("Select", variant="primary", id="select"), Button("Cancel", variant="default", id="cancel"))
 

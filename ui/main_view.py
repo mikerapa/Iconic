@@ -4,10 +4,10 @@ from textual.containers import Vertical, Horizontal, HorizontalScroll, VerticalS
 from textual.widget import Widget
 from textual.widgets import Label, Static, Input, Button
 from ui.file_path_input import FilePathInput
+from ui.open_file import OpenFileModal
 from ui.desktop_entry_edit import DesktopEntryEdit
 from model.desktop_entry import DesktopEntry
 from model.file_system import FileSystem
-from ui.open_file import OpenFileModal
 from textual.reactive import reactive
 from ui.save_dialogs import SaveConfirmModal, SaveAsModal
 
@@ -82,8 +82,6 @@ class MainView(Widget):
         yield Horizontal(Button("Save", id="save"), Button("Save As", id="save_as"), Button("Clear", id="clear"), classes="bottom-button-bar")
             
         
-        # yield DesktopEntryEdit(self.desktop_file)
-
 
     def open_desktop_file(self, path: str):
         self.desktop_file = FileSystem.get_desktop_entry(path)

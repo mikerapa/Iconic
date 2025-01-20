@@ -4,14 +4,14 @@ from model.log_handler import get_logger
 from textual.widgets import Footer
 from textual.binding import Binding
 from textual import on
-from ui.open_file import OpenFileModal
+# from ui.open_file import OpenFileModal
 
 logger = get_logger(__name__)
 
 class IconicApp(App):
     """Main Iconic application."""
     
-    # TODO: this CSS claass should  be renamed to something more general
+    # TODO: this CSS class should  be renamed to something more general
 
     CSS_PATH = "ui/file_input_style.tcss"
     BINDINGS = [

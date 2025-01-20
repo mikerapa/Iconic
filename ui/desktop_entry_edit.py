@@ -6,6 +6,7 @@ from textual.widgets import Label, Input
 from ui.path_input import PathInput
 from textual.validation import Function, ValidationResult
 from textual.theme import Theme
+from ui.file_path_input import FilePathInput
 
 class DesktopEntryEdit(Widget):
 
@@ -45,14 +46,17 @@ class DesktopEntryEdit(Widget):
         yield Label("Name:", classes="grid-label")
         yield Input(value=self.desktop_entry.name,id="name", validators=[Function(self.validate_name, "Name is invalid")])
         yield Label("Exec:")
-        yield PathInput(allow_files=True, allow_folders=False)
+        yield FilePathInput(id="exec", allow_files=True, allow_folders=False)
         yield Label("Icon:")
-        yield PathInput(allow_files=True, allow_folders=False)
+        yield FilePathInput(id="icon", allow_files=True, allow_folders=False)
         yield Label("Type:")
         yield Input(value=self.desktop_entry.type, id="type")
         yield Label("Categories:")
         yield Input(value=self.desktop_entry.categories, id="categories")
 
+    @on(FilePathInput.PathSelected)
+    def on_path_selected(self, event: FilePathInput.PathSelected):
+        print(f"Path selected: {event.path}, id: {event.id}")
 
     @on(Input.Changed)
     def on_input_changed(self, event: Input.Changed):
