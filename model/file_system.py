@@ -75,3 +75,4 @@ class FileSystem:
             f.write(DesktopEntryBuilder.create_desktop_entry(desktop_entry))
             
         FileSystem.logger.debug(f"Successfully wrote desktop file: {file_path}")
+        print("Successfully wrote desktop file: ", file_path, desktop_entry)

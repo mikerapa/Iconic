@@ -84,7 +84,9 @@ class MainView(Widget):
         
 
     def open_desktop_file(self, path: str):
-        self.desktop_file = FileSystem.get_desktop_entry(path)
+        self.desktop_file = FileSystem.read_desktop_file(path)
+        print(f"Desktop file opened: {self.desktop_file}")
+        self.query_one(DesktopEntryEdit).desktop_entry = self.desktop_file
 
     
 
@@ -98,6 +100,7 @@ class MainView(Widget):
                 self.desktop_file_path = path
                 self.selection_message = f"Editing {path}"
                 self.query_one("#selection-message").update(self.selection_message)
+                self.open_desktop_file(path)
             else:
                 print("No desktop file selected")
             

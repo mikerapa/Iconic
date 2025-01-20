@@ -8,6 +8,7 @@ import model.log_handler as log_handler
 from typing import Iterable
 from textual import work
 from textual.message import Message
+from textual.reactive import reactive
 
 logger = log_handler.get_logger(__name__)
 
@@ -91,12 +92,12 @@ class FilePathInput(Widget):
         grid-columns: 4fr 1fr;
     }
     """
+    path = reactive("")
 
     def __init__(self, id: str, pattern: str = "*", allow_files: bool = False, allow_folders : bool = False):
         self.pattern = pattern
         self.allow_files = allow_files
         self.allow_folders = allow_folders
-        self.path = ""
         super().__init__(id=id)
 
 
@@ -107,8 +108,13 @@ class FilePathInput(Widget):
             super().__init__()
 
     def compose(self) -> ComposeResult:
-        yield Input(value=self.path, classes="inline-widget")
-        yield Button("Browse", classes="inline-widget")
+        yield Input(classes="inline-widget", id=f"{self.id}_input")
+        yield Button("Browse", classes="inline-widget", id=f"{self.id}_browse")
+
+    def watch_path(self, path: str):
+        print(f"Path changed: {path}")
+        input_widget = self.query_one(f"#{self.id}_input", Input)
+        input_widget.value = self.path 
 
 
     @work
@@ -118,7 +124,7 @@ class FilePathInput(Widget):
         path = await self.app.push_screen_wait(modal)
         if path:
             self.path = str(path)
-            input_widget = self.query_one(Input)
+            input_widget = self.query_one(f"#{self.id}_input", Input)
             input_widget.value = self.path 
             self.post_message(self.PathSelected(self.path, self.id))
 
